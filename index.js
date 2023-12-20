@@ -326,10 +326,12 @@ const updateJsonFile = (filename, newData) => {
                                     console.log(textVoucher(index, nameVoucher, descVoucher, statusVoucher, rewardDate, expiredDate))
                                 });
                             } else {
-                                console.log(`[!] ${chalk.red(`Voucher Account Tidak Ada!`)}`)
+                                console.log(`[!] ${chalk.red(`Gagal Check Voucher Account!`)}`)
+                                console.log();
                             }
                         } else {
-                            console.log(`[!] ${chalk.red(`Gagal Check Voucher Account!`)}`)
+                            console.log(`[!] ${chalk.red(`Voucher Account Tidak Ada!`)}`)
+                            console.log();
                         }
                     } else if (inputPilihan === `3`) {
                         console.log(`[!] Keluar Dari Program!`)
