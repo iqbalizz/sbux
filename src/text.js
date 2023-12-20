@@ -1,5 +1,15 @@
 import chalk from "chalk";
 
+export const banner = () => {
+    const value = `
+    
+    █▀ █▄▄ █░█ ▀▄▀   █▀▀ █▀█ █▀▀ ▄▀█ ▀█▀ █▀█ █▀█
+    ▄█ █▄█ █▄█ █░█   █▄▄ █▀▄ ██▄ █▀█ ░█░ █▄█ █▀▄
+                           create : IqbalGanteng
+    `
+    return value
+}
+
 export const mainFeatures = () => {
     const text = `[!] ${chalk.yellow(`Pilih pilihan dibawah!`)}
     [1] Create Account Manual
