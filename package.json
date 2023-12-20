@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "crypto-js": "^4.2.0",
+    "delay": "^6.0.0",
+    "fs": "^0.0.1-security",
+    "node-fetch": "^3.3.2",
+    "readline-sync": "^1.4.10"
+  },
+  "name": "starbucks",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
