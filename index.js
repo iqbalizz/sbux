@@ -4,6 +4,7 @@ import delay from "delay";
 import fs from "fs";
 import readlineSync from "readline-sync";
 import {
+    banner,
     mainFeatures,
     textChooseFeature,
     textProfileAccount,
@@ -192,6 +193,7 @@ const updateJsonFile = (filename, newData) => {
 };
 
 (async () => {
+    console.log(banner())
     console.log(mainFeatures());
     const inputFeatures = readlineSync.question(`[?] Masukkan Pilihan : `)
 
