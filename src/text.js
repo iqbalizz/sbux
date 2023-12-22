@@ -13,16 +13,16 @@ export const banner = () => {
 export const mainFeatures = () => {
     const text = `[!] ${chalk.yellow(`Pilih pilihan dibawah!`)}
     [1] Create Account Manual
-    [2] Login Account, Check Profile Account, Check Voucher Account
+    [2] Login Account With Cryptogmail (${chalk.yellow(`Check Voucher, Check Profile`)}) [${chalk.green(`Auto Login`)}]
+    [3] Login Account Manual (${chalk.yellow(`Check Voucher, Check Profile`)}) [${chalk.green(`Manual Login`)}]
     `;
     return text
 }
 
 export const textChooseFeature = () => {
     const text = `[!] ${chalk.yellow(`Pilih pilihan dibawah!`)}
-    [1] Check Profile Account
-    [2] Check Voucher Account
-    [3] Keluar Dari Program/CTRL + C
+    [1] Input OTP Menggunakan CryptoMail
+    [2] Input OTP Manual
     `;
     return text
 }
