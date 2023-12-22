@@ -1,7 +1,8 @@
 import chalk from "chalk";
 import delay from "delay";
 import cheerio from "cheerio";
-import { promises as fs } from 'fs';
+import fs from "fs";
+import { promises as fa } from 'fs';
 import readlineSync from "readline-sync";
 import {
     banner,
@@ -62,94 +63,102 @@ const randstr = length =>
     const inputFeatures = readlineSync.question(`[?] Masukkan Pilihan : `)
     //!PILIHAN 1
     if (inputFeatures === `1`) {
-        const inputNumber = readlineSync.question(`[?] Masukkan Nomer HP (cth : 821...) : `)
-        const resultCheckNumber = await checkPhoneNumber(inputNumber);
-        // console.log(resultCheckNumber);
-        if (resultCheckNumber.status === 200) {
-            console.log(`[!] ${chalk.yellow(`Berhasil Mengirimkan Kode OTP!`)}`);
-            await delay(3 * 1000);
+        const jumlahCreateAcc = readlineSync.question(`[?] Mau berapa Account (cth : 3) : `);
+        for (let i = 0; jumlahCreateAcc >= 1; i++) {
+            console.log(`[!] ${chalk.blue(`Create Account Ke - ${i + 1}`)}`)
+            const inputNumber = readlineSync.question(`[?] Masukkan Nomer HP (cth : 821...) : `)
+            const resultCheckNumber = await checkPhoneNumber(inputNumber);
+            // console.log(resultCheckNumber);
+            if (resultCheckNumber.status === 200) {
+                console.log(`[!] ${chalk.yellow(`Berhasil Mengirimkan Kode OTP!`)}`);
+                await delay(3 * 1000);
 
-            const messages = resultCheckNumber.message;
-            console.log(`[!] ${chalk.green(messages)}`);
+                const messages = resultCheckNumber.message;
+                console.log(`[!] ${chalk.green(messages)}`);
 
-            const inputOtp = readlineSync.question(`[?] Masukkan Kode OTP : `);
+                const inputOtp = readlineSync.question(`[?] Masukkan Kode OTP : `);
 
-            const resultValidateOtp = await validateOtp(inputOtp, inputNumber);
-            // console.log(resultValidateOtp);
-            if (resultValidateOtp !== null) {
-                if (resultValidateOtp.status === 200) {
-                    const messages = resultValidateOtp.message;
-                    console.log(`[!] ${chalk.green(messages)}`);
-
-                    const data = fs.readFileSync(`dataProfile.json`, `utf-8`);
-                    const dataProfile = JSON.parse(data)
-
-                    const password = dataProfile.password;
-                    const firstName = dataProfile.firstName;
-                    const lastName = dataProfile.lastName;
-                    const dob = dataProfile.dob;
-                    const refferallCode = dataProfile.referralCode;
-                    // console.log(`${email} ${password} ${firstName} ${lastName} ${dob} ${refferallCode}`)
-
-                    const resultDomainEmail = await chooseDomain();
-                    console.log(`[!] ${chalk.yellow(`List Domain Yang Tersedia!`)}`)
-                    resultDomainEmail.domains.forEach((domain, index) => {
-                        const listDomain = `   - ${domain}`
-                        console.log(listDomain)
-
-                    });
-                    const domain = resultDomainEmail.domains;
-                    const randomIndex = Math.floor(Math.random() * domain.length);
-                    const selectedDomain = domain[randomIndex];
-                    // console.log(resultDomainEmail);
-                    // console.log(domain)
-                    console.log(`[!] Domain yang dipilih : ${chalk.green(selectedDomain)}`)
-
-                    const email = `${firstName}${lastName}${await randstr(2)}${selectedDomain}`
-                    console.log(`[!] Email Use : ${chalk.green(email)}`)
-
-                    const resultRegistration = await getRegistration(email, password, firstName, lastName, dob, inputNumber, refferallCode, inputOtp);
-                    // console.log(resultRegistration);
-                    if (resultRegistration.status === 200) {
-                        const messages = resultRegistration.message;
+                const resultValidateOtp = await validateOtp(inputOtp, inputNumber);
+                // console.log(resultValidateOtp);
+                if (resultValidateOtp !== null) {
+                    if (resultValidateOtp.status === 200) {
+                        const messages = resultValidateOtp.message;
                         console.log(`[!] ${chalk.green(messages)}`);
 
-                        const savedAccount = `Email: ${email}\nPassword: ${password}\nFullName: ${firstName} ${lastName}\nRefferall Code: ${refferallCode}\n\n`;
+                        const data = fs.readFileSync(`dataProfile.json`, `utf-8`);
+                        const dataProfile = JSON.parse(data)
 
-                        const savedAccountToCheckVoc = `${email}|${password}\n`
+                        const password = dataProfile.password;
+                        const firstName = dataProfile.firstName;
+                        const lastName = dataProfile.lastName;
+                        const dob = dataProfile.dob;
+                        const refferallCode = dataProfile.referralCode;
+                        // console.log(`${email} ${password} ${firstName} ${lastName} ${dob} ${refferallCode}`)
 
-                        fs.appendFile('AkunSaved.txt', savedAccount, (err) => {
-                            if (err) {
-                                console.log(chalk.red('[!] Gagal menyimpan data akun.'));
-                            } else {
-                                console.log(chalk.green('[!] Data akun berhasil disimpan dalam file akun.txt.'));
-                            }
+                        const resultDomainEmail = await chooseDomain();
+                        console.log(`[!] ${chalk.yellow(`List Domain Yang Tersedia!`)}`)
+                        resultDomainEmail.domains.forEach((domain, index) => {
+                            const listDomain = `   - ${domain}`
+                            console.log(listDomain)
+
                         });
+                        const domain = resultDomainEmail.domains;
+                        const randomIndex = Math.floor(Math.random() * domain.length);
+                        const selectedDomain = domain[randomIndex];
+                        // console.log(resultDomainEmail);
+                        // console.log(domain)
+                        console.log(`[!] Domain yang dipilih : ${chalk.green(selectedDomain)}`)
 
-                        fs.appendFile('listAkun.txt', savedAccountToCheckVoc, (err) => {
-                            if (err) {
-                                console.log(chalk.red('[!] Gagal menyimpan data akun.'));
-                            } else {
-                                console.log(chalk.green('[!] Data akun berhasil disimpan dalam file akun.txt.'));
-                            }
-                        });
+                        const email = `${firstName}${lastName}${await randstr(2)}${selectedDomain}`
+                        console.log(`[!] Email Use : ${chalk.green(email)}`)
+
+                        const resultRegistration = await getRegistration(email, password, firstName, lastName, dob, inputNumber, refferallCode, inputOtp);
+                        // console.log(resultRegistration);
+                        if (resultRegistration.status === 200) {
+                            const messages = resultRegistration.message;
+                            console.log(`[!] ${chalk.green(messages)}`);
+
+                            const savedAccount = `Email: ${email}\nPassword: ${password}\nFullName: ${firstName} ${lastName}\nRefferall Code: ${refferallCode}\n\n`;
+
+                            const savedAccountToCheckVoc = `${email}|${password}\n`
+
+                            fs.appendFile('AkunSaved.txt', savedAccount, (err) => {
+                                if (err) {
+                                    console.log(`[!] ${chalk.red('Gagal menyimpan data akun.')}`);
+                                    console.log();
+                                } else {
+                                    console.log(`[!] ${chalk.green('Data akun berhasil disimpan dalam file akun.txt.')}`);
+                                }
+                            });
+
+                            fs.appendFile('listAkun.txt', savedAccountToCheckVoc, (err) => {
+                                if (err) {
+                                    console.log(`[!] ${chalk.red('Gagal menyimpan data akun.')}`);
+                                    console.log();
+                                } else {
+                                    console.log(`[!] ${chalk.green('Data akun berhasil disimpan dalam file akun.txt.')}`);
+                                    console.log();
+                                }
+                            });
+                        } else {
+                            const messages = resultRegistration.message;
+                            console.log(`[!] ${chalk.red(messages)}`)
+                        }
                     } else {
-                        const messages = resultRegistration.message;
-                        console.log(`[!] ${chalk.red(messages)}`)
+                        console.log(chalk.red(`OTP Invalid Or OTP Expired!`));
                     }
                 } else {
-                    console.log(chalk.red(`OTP Invalid Or OTP Expired!`));
+                    console.log(chalk.red(`Result Validate OTP is null!`));
                 }
             } else {
-                console.log(chalk.red(`Result Validate OTP is null!`));
+                const messages = resultCheckNumber.message;
+                console.log(`[!] ${chalk.red(messages)}`)
             }
-        } else {
-            const messages = resultCheckNumber.message;
-            console.log(`[!] ${chalk.red(messages)}`)
+            await delay(3 * 1000)
         }
         //!PILIHAN 2
     } else if (inputFeatures === `2`) {
-        const fileContent = await fs.readFile('listAkun.txt', 'utf-8');
+        const fileContent = await fa.readFile('listAkun.txt', 'utf-8');
         const accounts = fileContent.trim().split('\n').map(line => {
             const [inputEmail, inputPassword] = line.split('|');
             return {
@@ -281,7 +290,7 @@ const randstr = length =>
         }
         //!PILIHAN 3
     } else if (inputFeatures === `3`) {
-        const fileContent = await fs.readFile('listAkunManual.txt', 'utf-8');
+        const fileContent = await fa.readFile('listAkunManual.txt', 'utf-8');
         const accounts = fileContent.trim().split('\n').map(line => {
             const [inputEmail, inputPassword] = line.split('|');
             return {
